@@ -46,6 +46,21 @@ class RoomController extends Controller
         return response()->json(['message' => 'User assigned successfully.'], 200);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'cost' => 'required|numeric',
+        ]);
+
+        $room = Room::findOrFail($id);
+        $room->name = $request->name;
+        $room->cost = $request->cost;
+        $room->save();
+
+        return response()->json(['success' => true, 'message' => 'Room updated successfully']);
+    }
+
     public function removeTenant($roomId)
     {
         try {
